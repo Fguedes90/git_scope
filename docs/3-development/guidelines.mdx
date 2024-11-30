@@ -1,0 +1,312 @@
+---
+title: 'Diretrizes de Estrutura'
+description: 'Guia completo da estrutura e organização do projeto Git Scope'
+---
+
+# Git Scope - Diretrizes de Estrutura
+
+## Estrutura de Diretórios
+
+<CodeGroup>
+  <CodeBlock title="Estrutura">
+    ```bash
+    git-scope/
+    ├── src/
+    │   └── git_scope/
+    │       ├── __init__.py
+    │       ├── cli/
+    │       │   ├── __init__.py
+    │       │   ├── commands.py      # Implementação dos comandos CLI
+    │       │   └── options.py       # Definições de opções e argumentos
+    │       │
+    │       ├── core/
+    │       │   ├── __init__.py
+    │       │   ├── diff.py          # Lógica core de manipulação de diff
+    │       │   ├── filter.py        # Filtros e padrões de exclusão
+    │       │   └── parser.py        # Parsing de diffs e arquivos
+    │       │
+    │       ├── formatters/
+    │       │   ├── __init__.py
+    │       │   ├── base.py          # Classe base para formatadores
+    │       │   ├── compact.py       # Formatação compacta
+    │       │   └── detailed.py      # Formatação detalhada
+    │       │
+    │       └── utils/
+    │           ├── __init__.py
+    │           ├── config.py        # Gerenciamento de configuração
+    │           ├── git.py           # Interação com git
+    │           └── files.py         # Operações com arquivos
+    │
+    ├── tests/
+    │   ├── __init__.py
+    │   ├── conftest.py             # Configurações do pytest
+    │   ├── fixtures/               # Arquivos de teste
+    │   │   ├── diffs/             # Diffs para testes
+    │   │   └── configs/           # Configurações para testes
+    │   │
+    │   ├── unit/                  # Testes unitários
+    │   │   ├── test_diff.py
+    │   │   ├── test_filter.py
+    │   │   └── test_parser.py
+    │   │
+    │   └── integration/           # Testes de integração
+    │       ├── test_cli.py
+    │       └── test_git.py
+    │
+    ├── docs/                      # Documentação
+    │   ├── api/                   # Documentação da API
+    │   ├── guides/               # Guias de uso
+    │   └── examples/             # Exemplos práticos
+    │
+    ├── scripts/                   # Scripts de desenvolvimento
+    │   ├── install-hooks.sh
+    │   └── run-tests.sh
+    │
+    ├── .git-scope.yml            # Configuração do próprio projeto
+    ├── pyproject.toml            # Configuração do projeto
+    ├── README.md                 # Documentação principal
+    └── CHANGELOG.md              # Registro de mudanças
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+## Princípios de Organização
+
+### 1. Separação de Responsabilidades
+
+<CardGroup>
+  <Card title="CLI" icon="terminal">
+    Interface de linha de comando em `cli/`
+  </Card>
+  <Card title="Core" icon="cube">
+    Lógica principal de negócio em `core/`
+  </Card>
+  <Card title="Formatters" icon="paintbrush">
+    Formatação de output em `formatters/`
+  </Card>
+  <Card title="Utils" icon="wrench">
+    Funções utilitárias em `utils/`
+  </Card>
+</CardGroup>
+
+### 2. Estrutura de Módulos
+
+<Check>Cada módulo deve ter seu próprio `__init__.py</Check>
+<Check>Interfaces públicas definidas no `__init__.py</Check>
+<Check>Um arquivo por responsabilidade</Check>
+<Warning>Evitar arquivos com mais de 300 linhas</Warning>
+
+### 3. Testes
+
+<Steps>
+  <Step title="Separação de Testes">
+    Mantenha clara a divisão entre testes unitários e de integração
+  </Step>
+  <Step title="Fixtures">
+    Organize fixtures por tipo em diretórios específicos
+  </Step>
+  <Step title="Espelhamento">
+    Nomes de arquivos de teste devem espelhar a estrutura src/
+  </Step>
+  <Step title="Cobertura">
+    Cada arquivo de código deve ter seu arquivo de teste correspondente
+  </Step>
+</Steps>
+
+### 4. Importações
+
+<CodeGroup>
+  <CodeBlock title="Ordem de Imports">
+    ```python
+    # Primeiro imports da stdlib
+    from typing import List, Dict
+    import os
+    import sys
+
+    # Depois third-party
+    from third_party import lib
+
+    # Por último, imports internos
+    from git_scope.core import diff
+    from git_scope.utils import files
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+### 5. Nomenclatura
+
+<AccordionGroup>
+  <Accordion title="Arquivos">
+    Use snake_case: `file_utils.py`
+  </Accordion>
+  <Accordion title="Classes">
+    Use PascalCase: `DiffParser`
+  </Accordion>
+  <Accordion title="Funções/Variáveis">
+    Use snake_case: `parse_diff()`
+  </Accordion>
+  <Accordion title="Constantes">
+    Use UPPER_CASE: `MAX_DIFF_SIZE`
+  </Accordion>
+</AccordionGroup>
+
+### 6. Documentação
+
+<Check>Docstrings em todas as funções públicas</Check>
+<Check>Tipos anotados usando type hints</Check>
+<Check>README em cada diretório principal</Check>
+<Check>Exemplos práticos para features principais</Check>
+
+### 7. Configuração
+
+<Info>Configurações separadas por ambiente</Info>
+<Info>Valores default razoáveis</Info>
+<Info>Documentação clara de cada opção</Info>
+<Info>Validação de configuração</Info>
+
+## Padrões de Código
+
+### Classes Base
+
+<CodeGroup>
+  <CodeBlock title="Exemplo de Classes">
+    ```python
+    from abc import ABC, abstractmethod
+    from typing import List, Dict
+
+    class BaseFormatter(ABC):
+        """Base class for diff formatters."""
+        
+        @abstractmethod
+        def format(self, diff: str) -> str:
+            """Format the diff according to specific rules."""
+            pass
+
+    class CompactFormatter(BaseFormatter):
+        """Formatter that produces compact output."""
+        
+        def format(self, diff: str) -> str:
+            # Implementation
+            pass
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+### Funções Utilitárias
+
+<CodeGroup>
+  <CodeBlock title="Exemplo de Função">
+    ```python
+    from typing import Optional
+    from pathlib import Path
+
+    def read_diff_file(path: Path) -> Optional[str]:
+        """
+        Read diff from file.
+        
+        Args:
+            path: Path to diff file
+            
+        Returns:
+            Contents of diff file or None if file doesn't exist
+        """
+        try:
+            return path.read_text()
+        except FileNotFoundError:
+            return None
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+## Manutenção
+
+### 1. Revisão de Código
+
+<Steps>
+  <Step title="Formatação">
+    Usar formatador automático (black)
+  </Step>
+  <Step title="Linting">
+    Executar linter (flake8)
+  </Step>
+  <Step title="Type Checking">
+    Verificar type hints (mypy)
+  </Step>
+  <Step title="Testes">
+    Manter cobertura de testes alta
+  </Step>
+</Steps>
+
+### 2. Versionamento
+
+<Steps>
+  <Step title="Semantic Versioning">
+    Seguir padrão de versionamento semântico
+  </Step>
+  <Step title="Changelog">
+    Manter CHANGELOG.md atualizado
+  </Step>
+  <Step title="Tags">
+    Criar tags para cada release
+  </Step>
+  <Step title="Branches">
+    Manter branches de feature isoladas
+  </Step>
+</Steps>
+
+### 3. Documentação
+
+<Steps>
+  <Step title="README">
+    Manter README.md atualizado
+  </Step>
+  <Step title="Breaking Changes">
+    Documentar mudanças incompatíveis
+  </Step>
+  <Step title="Exemplos">
+    Adicionar exemplos para novas features
+  </Step>
+  <Step title="Migração">
+    Criar guias de migração quando necessário
+  </Step>
+</Steps>
+
+## Evolução do Código
+
+### 1. Adicionando Features
+
+<Steps>
+  <Step title="Localização">
+    Criar em módulo apropriado
+  </Step>
+  <Step title="TDD">
+    Adicionar testes primeiro
+  </Step>
+  <Step title="Documentação">
+    Documentar no README
+  </Step>
+  <Step title="Changelog">
+    Atualizar CHANGELOG
+  </Step>
+</Steps>
+
+### 2. Refatoração
+
+<Steps>
+  <Step title="Interfaces">
+    Manter interfaces públicas estáveis
+  </Step>
+  <Step title="Escopo">
+    Refatorar um módulo por vez
+  </Step>
+  <Step title="Testes">
+    Manter testes passando
+  </Step>
+  <Step title="Documentação">
+    Documentar mudanças internas
+  </Step>
+</Steps>
+
+<Note>
+  Estas diretrizes devem evoluir com o projeto. Atualize conforme necessário, mas mantenha a clareza e organização.
+</Note> 

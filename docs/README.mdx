@@ -1,0 +1,140 @@
+---
+title: 'Git Scope'
+description: 'Uma ferramenta poderosa para análise e filtragem de diffs do Git'
+---
+
+<img
+  className="block dark:hidden"
+  src="/logo/light.svg"
+  alt="Git Scope Logo"
+/>
+<img
+  className="hidden dark:block"
+  src="/logo/dark.svg"
+  alt="Git Scope Logo"
+/>
+
+# Git Scope
+
+<Note>
+  Git Scope é uma ferramenta moderna e eficiente para análise e filtragem de diffs do Git,
+  permitindo uma melhor compreensão e controle sobre as mudanças em seu código.
+</Note>
+
+## Visão Geral
+
+<CardGroup cols={2}>
+  <Card title="Análise Inteligente" icon="magnifying-glass">
+    Analise diffs do Git com filtros avançados e visualização contextual
+  </Card>
+  <Card title="Filtragem Poderosa" icon="filter">
+    Filtre mudanças por padrões, arquivos, autores e muito mais
+  </Card>
+  <Card title="Integração Contínua" icon="gears">
+    Integre com seu pipeline CI/CD para automação e validação
+  </Card>
+  <Card title="Extensível" icon="puzzle-piece">
+    Crie formatadores e filtros customizados para suas necessidades
+  </Card>
+</CardGroup>
+
+## Começando
+
+<Steps>
+  <Step title="Instalação">
+    ```bash
+    pip install git-scope
+    ```
+  </Step>
+  <Step title="Configuração">
+    ```bash
+    git-scope init
+    ```
+  </Step>
+  <Step title="Uso Básico">
+    ```bash
+    git-scope analyze HEAD~1
+    ```
+  </Step>
+</Steps>
+
+## Recursos Principais
+
+### Análise de Diff
+
+<CodeGroup>
+  <CodeBlock title="Comando">
+    ```bash
+    git-scope analyze --filter "*.py" --exclude "tests/*" HEAD~1
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+### Filtros Avançados
+
+<AccordionGroup>
+  <Accordion title="Padrões">
+    - Expressões regulares
+    - Glob patterns
+    - Filtros compostos
+  </Accordion>
+  <Accordion title="Contexto">
+    - Análise semântica
+    - Dependências
+    - Impacto de mudanças
+  </Accordion>
+</AccordionGroup>
+
+### Formatação
+
+<Frame>
+  <img src="/images/output-example.png" alt="Exemplo de Saída" />
+</Frame>
+
+## Casos de Uso
+
+<CardGroup cols={2}>
+  <Card title="Code Review" icon="code">
+    Analise mudanças antes do review para focar no que importa
+  </Card>
+  <Card title="CI/CD" icon="rocket">
+    Automatize validações no seu pipeline de integração
+  </Card>
+  <Card title="Monitoramento" icon="chart-line">
+    Acompanhe padrões e métricas de mudanças
+  </Card>
+  <Card title="Documentação" icon="book">
+    Gere relatórios e documentação automaticamente
+  </Card>
+</CardGroup>
+
+## Próximos Passos
+
+<Steps>
+  <Step title="Explore a Documentação">
+    Conheça todos os recursos e possibilidades
+  </Step>
+  <Step title="Siga o Tutorial">
+    Aprenda com exemplos práticos e guiados
+  </Step>
+  <Step title="Contribua">
+    Junte-se à comunidade e ajude a melhorar
+  </Step>
+</Steps>
+
+## Comunidade
+
+<CardGroup cols={2}>
+  <Card title="GitHub" icon="github">
+    Contribua com código e reporte issues
+  </Card>
+  <Card title="Discord" icon="discord">
+    Participe das discussões e tire dúvidas
+  </Card>
+</CardGroup>
+
+## Licença
+
+<Note>
+  Git Scope é um software open source licenciado sob a [MIT License](https://opensource.org/licenses/MIT).
+</Note> 

@@ -1,0 +1,347 @@
+---
+title: 'Guia BDD'
+description: 'Diretrizes para desenvolvimento orientado a comportamento (BDD)'
+---
+
+# Guia de BDD (Behavior-Driven Development)
+
+<Note>
+  Este guia apresenta as melhores práticas e diretrizes para implementação de BDD
+  no projeto Git Scope, usando pytest-bdd como framework principal.
+</Note>
+
+## Conceitos Básicos
+
+<AccordionGroup>
+  <Accordion title="O que é BDD?">
+    BDD é uma metodologia que:
+    
+    <CardGroup>
+      <Card title="Colaboração" icon="users">
+        - Foco em comunicação
+        - Entendimento compartilhado
+        - Visão do usuário
+      </Card>
+      <Card title="Comportamento" icon="arrows-spin">
+        - Funcionalidades como comportamentos
+        - Cenários de uso
+        - Exemplos concretos
+      </Card>
+    </CardGroup>
+  </Accordion>
+  
+  <Accordion title="Benefícios">
+    <CardGroup>
+      <Card title="Qualidade" icon="shield-check">
+        - Testes alinhados com requisitos
+        - Documentação viva
+        - Validação contínua
+      </Card>
+      <Card title="Comunicação" icon="comments">
+        - Linguagem comum
+        - Clareza nos requisitos
+        - Colaboração efetiva
+      </Card>
+    </CardGroup>
+  </Accordion>
+</AccordionGroup>
+
+## Estrutura de Arquivos
+
+<Frame>
+  ```
+  tests/
+  ├── features/
+  │   ├── diff_analysis.feature
+  │   ├── filtering.feature
+  │   └── reporting.feature
+  ├── step_definitions/
+  │   ├── diff_steps.py
+  │   ├── filter_steps.py
+  │   └── report_steps.py
+  └── conftest.py
+  ```
+</Frame>
+
+## Escrevendo Features
+
+### Formato Gherkin
+
+<CodeGroup>
+  <CodeBlock title="diff_analysis.feature">
+    ```gherkin
+    Feature: Análise de Diff
+      Como um desenvolvedor
+      Quero analisar diffs do Git
+      Para entender as mudanças no código
+
+      Scenario: Analisar diff simples
+        Given um diff do Git com mudanças em arquivos Python
+        When eu analiso o diff
+        Then devo ver as mudanças formatadas
+        And devo ver estatísticas básicas
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+### Boas Práticas
+
+<Steps>
+  <Step title="Linguagem">
+    Use linguagem clara e consistente
+    
+    <CardGroup>
+      <Card title="Faça" icon="check">
+        - Verbos no presente
+        - Termos do domínio
+        - Exemplos concretos
+      </Card>
+      <Card title="Evite" icon="xmark">
+        - Termos técnicos
+        - Detalhes de implementação
+        - Ambiguidades
+      </Card>
+    </CardGroup>
+  </Step>
+  
+  <Step title="Cenários">
+    Estruture cenários efetivos
+    
+    <AccordionGroup>
+      <Accordion title="Componentes">
+        - Given (Contexto)
+        - When (Ação)
+        - Then (Resultado)
+      </Accordion>
+      <Accordion title="Dicas">
+        - Um comportamento por cenário
+        - Independência entre cenários
+        - Dados relevantes apenas
+      </Accordion>
+    </AccordionGroup>
+  </Step>
+  
+  <Step title="Organização">
+    Mantenha features organizadas
+    
+    <CardGroup>
+      <Card title="Estrutura" icon="folder-tree">
+        - Uma feature por arquivo
+        - Agrupamento lógico
+        - Nomes descritivos
+      </Card>
+      <Card title="Manutenção" icon="screwdriver-wrench">
+        - Atualize regularmente
+        - Remova obsoletos
+        - Mantenha consistência
+      </Card>
+    </CardGroup>
+  </Step>
+</Steps>
+
+## Implementando Steps
+
+### Estrutura Básica
+
+<CodeGroup>
+  <CodeBlock title="diff_steps.py">
+    ```python
+    from pytest_bdd import given, when, then, parsers
+    from git_scope.core import GitDiff
+
+    @given("um diff do Git com mudanças em arquivos Python")
+    def git_diff():
+        return GitDiff.from_file("tests/fixtures/python_changes.diff")
+
+    @when("eu analiso o diff")
+    def analyze_diff(git_diff):
+        return git_diff.analyze()
+
+    @then("devo ver as mudanças formatadas")
+    def check_formatted_changes(analyzed_diff):
+        assert analyzed_diff.format() is not None
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+### Padrões de Steps
+
+<AccordionGroup>
+  <Accordion title="Tipos de Steps">
+    <CardGroup>
+      <Card title="Given" icon="flag">
+        - Configura estado inicial
+        - Prepara dados
+        - Define contexto
+      </Card>
+      <Card title="When" icon="play">
+        - Executa ação principal
+        - Trigger de evento
+        - Operação sob teste
+      </Card>
+      <Card title="Then" icon="check">
+        - Verifica resultado
+        - Valida estado
+        - Confirma comportamento
+      </Card>
+    </CardGroup>
+  </Accordion>
+  
+  <Accordion title="Parâmetros">
+    <CodeGroup>
+      <CodeBlock title="Exemplo">
+        ```python
+        @given(parsers.parse("um diff com {num:d} mudanças"))
+        def diff_with_changes(num):
+            return create_diff_with_changes(num)
+        ```
+      </CodeBlock>
+    </CodeGroup>
+  </Accordion>
+</AccordionGroup>
+
+## Fixtures e Contexto
+
+### Configuração
+
+<CodeGroup>
+  <CodeBlock title="conftest.py">
+    ```python
+    import pytest
+    from pytest_bdd import given
+    from git_scope.core import GitScope
+
+    @pytest.fixture
+    def git_scope():
+        return GitScope()
+
+    @given("um Git Scope configurado")
+    def configured_git_scope(git_scope):
+        git_scope.configure()
+        return git_scope
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+### Boas Práticas
+
+<CardGroup cols={2}>
+  <Card title="Fixtures" icon="cube">
+    - Reutilizáveis
+    - Independentes
+    - Limpeza automática
+  </Card>
+  <Card title="Escopo" icon="layer-group">
+    - function
+    - class
+    - module
+    - session
+  </Card>
+  <Card title="Dados" icon="database">
+    - Fixtures de dados
+    - Factory fixtures
+    - Parametrização
+  </Card>
+  <Card title="Contexto" icon="sitemap">
+    - Compartilhamento
+    - Injeção
+    - Composição
+  </Card>
+</CardGroup>
+
+## Executando Testes
+
+### Comandos
+
+<CodeGroup>
+  <CodeBlock title="Básico">
+    ```bash
+    pytest tests/features
+    ```
+  </CodeBlock>
+  <CodeBlock title="Com Tags">
+    ```bash
+    pytest -k "diff or filter"
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+### Configuração
+
+<AccordionGroup>
+  <Accordion title="pytest.ini">
+    ```ini
+    [pytest]
+    bdd_features_base_dir = tests/features
+    bdd_step_packages = tests.step_definitions
+    ```
+  </Accordion>
+  <Accordion title="Markers">
+    ```python
+    @pytest.mark.diff
+    @pytest.mark.slow
+    @scenario("diff_analysis.feature", "Analisar diff complexo")
+    def test_complex_diff():
+        pass
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Integração Contínua
+
+<Steps>
+  <Step title="Setup">
+    Configure CI para BDD
+    
+    <CardGroup>
+      <Card title="GitHub Actions" icon="github">
+        - Execução automática
+        - Relatórios
+        - Notificações
+      </Card>
+      <Card title="Artefatos" icon="box-archive">
+        - Reports HTML
+        - Logs
+        - Cobertura
+      </Card>
+    </CardGroup>
+  </Step>
+  
+  <Step title="Relatórios">
+    Gere relatórios detalhados
+    
+    <Frame>
+      ```bash
+      pytest --bdd-report=html
+      ```
+    </Frame>
+  </Step>
+</Steps>
+
+## Melhores Práticas
+
+<AccordionGroup>
+  <Accordion title="Organização">
+    - Features por domínio
+    - Steps reutilizáveis
+    - Fixtures compartilhadas
+  </Accordion>
+  <Accordion title="Manutenção">
+    - Atualize regularmente
+    - Refatore quando necessário
+    - Mantenha documentação
+  </Accordion>
+  <Accordion title="Qualidade">
+    - Code review
+    - Padrões consistentes
+    - Testes dos steps
+  </Accordion>
+</AccordionGroup>
+
+## Conclusão
+
+<Note>
+  BDD é uma prática poderosa que une especificação, teste e documentação.
+  Seguindo estas diretrizes, podemos criar testes mais efetivos e manter
+  uma base de código mais sustentável.
+</Note> 

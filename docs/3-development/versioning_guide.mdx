@@ -1,0 +1,257 @@
+---
+title: 'Guia de Versionamento'
+description: 'Regras e diretrizes para o versionamento semântico da biblioteca'
+---
+
+# Guia de Versionamento
+
+## Semantic Versioning (SemVer)
+
+A biblioteca segue estritamente o [Semantic Versioning 2.0.0](https://semver.org/). O formato da versão é:
+
+```
+MAJOR.MINOR.PATCH[-PRERELEASE][+BUILD]
+```
+
+Exemplo: `1.2.3-beta.1+20231225`
+
+### Regras Básicas
+
+1. **MAJOR (X.0.0)** - Mudanças incompatíveis com versões anteriores
+   - Breaking changes na API pública
+   - Remoção de funcionalidades deprecadas
+   - Mudanças que requerem alterações no código do usuário
+
+2. **MINOR (0.X.0)** - Adições compatíveis com versões anteriores
+   - Novas funcionalidades
+   - Novos parâmetros opcionais
+   - Deprecação de funcionalidades (com aviso)
+
+3. **PATCH (0.0.X)** - Correções compatíveis com versões anteriores
+   - Correções de bugs
+   - Melhorias de performance
+   - Atualizações de documentação
+
+## Processo de Versionamento
+
+### 1. Desenvolvimento
+
+```bash
+# Branch de desenvolvimento
+git checkout -b develop
+
+# Feature branches
+git checkout -b feature/nova-funcionalidade
+
+# Bugfix branches
+git checkout -b fix/correcao-bug
+```
+
+### 2. Pre-releases
+
+Formato: `X.Y.Z-alpha.N` ou `X.Y.Z-beta.N` ou `X.Y.Z-rc.N`
+
+```toml
+# pyproject.toml
+[tool.poetry]
+version = "1.2.0-beta.1"
+```
+
+#### Ciclo de Pre-releases
+
+1. **Alpha**
+   - Desenvolvimento inicial
+   - Pode conter bugs conhecidos
+   - API pode mudar
+   ```
+   1.0.0-alpha.1
+   1.0.0-alpha.2
+   ```
+
+2. **Beta**
+   - Funcionalidades completas
+   - Pode conter bugs
+   - API estável, mas pode sofrer ajustes
+   ```
+   1.0.0-beta.1
+   1.0.0-beta.2
+   ```
+
+3. **Release Candidate (RC)**
+   - Pronto para produção
+   - Sem bugs conhecidos
+   - API finalizada
+   ```
+   1.0.0-rc.1
+   1.0.0-rc.2
+   ```
+
+### 3. Release
+
+```bash
+# Tag de versão
+git tag -a v1.2.3 -m "Release version 1.2.3"
+git push origin v1.2.3
+```
+
+## Exemplos de Mudanças
+
+### Major Version (Breaking Changes)
+
+```python
+# Versão 1.0.0
+def process_data(data: dict) -> str:
+    return json.dumps(data)
+
+# Versão 2.0.0
+def process_data(data: dict) -> bytes:  # Mudança no tipo de retorno
+    return json.dumps(data).encode()
+```
+
+### Minor Version (Novas Funcionalidades)
+
+```python
+# Versão 1.1.0
+def process_data(data: dict, encoding: str = 'utf-8') -> str:  # Novo parâmetro opcional
+    return json.dumps(data, encoding=encoding)
+```
+
+### Patch Version (Correções)
+
+```python
+# Versão 1.1.1
+def process_data(data: dict, encoding: str = 'utf-8') -> str:
+    if not isinstance(data, dict):
+        raise TypeError("data must be a dictionary")  # Correção de validação
+    return json.dumps(data, encoding=encoding)
+```
+
+## Deprecação
+
+### 1. Marcar como Deprecated
+
+```python
+import warnings
+
+def old_function():
+    warnings.warn(
+        "old_function() is deprecated and will be removed in version 2.0.0. "
+        "Use new_function() instead.",
+        DeprecationWarning,
+        stacklevel=2
+    )
+```
+
+### 2. Documentar Deprecação
+
+```python
+def old_function():
+    """
+    [DEPRECATED] Esta função será removida na versão 2.0.0.
+    Use new_function() em seu lugar.
+    
+    Deprecated since version 1.5.0.
+    """
+    warnings.warn(...)
+```
+
+## Checklist de Release
+
+### 1. Preparação
+- [ ] Todos os testes passando
+- [ ] Documentação atualizada
+- [ ] Changelog atualizado
+- [ ] Dependências verificadas
+- [ ] Performance testada
+
+### 2. Verificação
+- [ ] Breaking changes documentados
+- [ ] Deprecações documentadas
+- [ ] Exemplos atualizados
+- [ ] Guias de migração criados (se necessário)
+
+### 3. Release
+- [ ] Versão atualizada em `pyproject.toml`
+- [ ] Tag criada no Git
+- [ ] Pacote publicado no PyPI
+- [ ] Release notes publicadas
+
+## Changelog
+
+O arquivo CHANGELOG.md deve seguir o formato [Keep a Changelog](https://keepachangelog.com/):
+
+```markdown
+# Changelog
+
+## [2.0.0] - 2023-12-25
+
+### Added
+- Nova funcionalidade X
+- Suporte para Y
+
+### Changed
+- [BREAKING] Alteração na API Z
+- Melhoria no processamento W
+
+### Deprecated
+- Função antiga A será removida na v3.0.0
+
+### Removed
+- [BREAKING] Removida função B
+- Removido suporte deprecated para C
+
+### Fixed
+- Corrigido bug D
+- Resolvido problema E
+
+### Security
+- Atualizada dependência vulnerável F
+```
+
+## Política de Compatibilidade
+
+### 1. Garantias
+- Versões PATCH são sempre seguras para atualizar
+- Versões MINOR são seguras se não usar funcionalidades deprecadas
+- Versões MAJOR podem requerer mudanças no código
+
+### 2. Suporte
+- Última versão MAJOR: Suporte total
+- Versão MAJOR anterior: Apenas correções de segurança
+- Versões mais antigas: Sem suporte
+
+### 3. Dependências
+- Especificar versões compatíveis:
+```toml
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.28.0"
+```
+
+## Ferramentas Recomendadas
+
+### 1. Versionamento
+```bash
+# Bump version
+poetry version patch  # ou minor, major
+```
+
+### 2. Changelog
+```bash
+# Gerar changelog
+git-cliff --output CHANGELOG.md
+```
+
+### 3. CI/CD
+```yaml
+# .github/workflows/release.yml
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build and publish
+        run: |
+          poetry build
+          poetry publish
+``` 

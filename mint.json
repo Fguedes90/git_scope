@@ -1,0 +1,107 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Git Scope",
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#0D9373",
+    "light": "#07C983",
+    "dark": "#0D9373",
+    "anchors": {
+      "from": "#0D9373",
+      "to": "#07C983"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com/yourusername/git-scope"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Get Started",
+    "url": "/docs/quickstart"
+  },
+  "anchors": [
+    {
+      "name": "API",
+      "icon": "code",
+      "url": "api"
+    },
+    {
+      "name": "Examples",
+      "icon": "book-open",
+      "url": "examples"
+    },
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/yourusername/git-scope"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Introduction",
+      "pages": [
+        "docs/README",
+        "docs/quickstart",
+        "docs/installation",
+        "docs/configuration"
+      ]
+    },
+    {
+      "group": "Project Planning",
+      "pages": [
+        "docs/2-planning/action_plan",
+        "docs/2-planning/roadmap",
+        "docs/2-planning/implementation"
+      ]
+    },
+    {
+      "group": "Development",
+      "pages": [
+        "docs/3-development/guidelines",
+        "docs/3-development/environment",
+        "docs/3-development/contributing",
+        "docs/3-development/documentation_guide",
+        "docs/3-development/ai_documentation_guide",
+        "docs/3-development/versioning_guide",
+        "docs/3-development/release_workflow"
+      ]
+    },
+    {
+      "group": "Testing",
+      "pages": [
+        "docs/guides/testing/bdd",
+        "docs/4-testing/test_strategy",
+        "docs/4-testing/test_examples"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "docs/5-api/core/diff",
+        "docs/5-api/core/filter",
+        "docs/5-api/core/parser",
+        "docs/5-api/cli/commands",
+        "docs/5-api/cli/options",
+        "docs/5-api/formatters/base",
+        "docs/5-api/formatters/custom"
+      ]
+    },
+    {
+      "group": "Examples",
+      "pages": [
+        "docs/6-examples/basic_usage",
+        "docs/6-examples/advanced_filters",
+        "docs/6-examples/custom_formatting"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/yourusername/git-scope"
+  }
+} 

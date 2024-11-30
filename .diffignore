@@ -1,0 +1,45 @@
+# Ignore all migration files
+*/migrations/*
+
+# Frontend files
+*.js
+*.jsx
+*.ts
+*.tsx
+*.css
+*.scss
+*.sass
+*.less
+*.html
+*.vue
+*.svelte
+*.json
+
+# Frontend directories
+frontend/*
+static/*
+assets/*
+public/*
+src/*
+components/*
+pages/*
+
+# Cache and build files
+*.pyc
+__pycache__/*
+*.egg-info
+dist/*
+build/*
+
+# IDE files
+.vscode/*
+.idea/*
+*.swp
+*.swo
+
+# You can use gitignore-style patterns
+# For example:
+# Ignore all .log files
+*.log
+# But track production.log
+!production.log 

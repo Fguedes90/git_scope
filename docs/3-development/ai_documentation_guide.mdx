@@ -1,0 +1,228 @@
+---
+title: 'Guia de Documentação para Agentes IA'
+description: 'Instruções para agentes IA manterem a documentação atualizada com as mudanças de código'
+---
+
+# Guia de Documentação para Agentes IA
+
+## Análise de Mudanças
+
+### 1. Identificação de Alterações
+
+```python
+# Exemplo de mudança no código
+# src/git_scope/core/diff.py
+- def filter_diff(content: str) -> str:
++ def filter_diff(content: str, patterns: List[str]) -> str:
+```
+
+Pontos a verificar:
+- Mudanças em assinaturas de funções
+- Novos parâmetros ou retornos
+- Alterações em comportamentos
+- Breaking changes
+
+### 2. Escopo da Documentação
+
+Arquivos a serem analisados:
+```bash
+src/git_scope/           # Código fonte
+├── __init__.py         # Versão e exports
+├── core/               # Lógica principal
+│   ├── diff.py         # Manipulação de diff
+│   ├── filter.py       # Filtros
+│   └── parser.py       # Parsing
+├── cli/                # Interface CLI
+│   └── commands.py     # Comandos
+└── utils/              # Utilitários
+    └── files.py        # Operações com arquivos
+
+docs/                   # Documentação
+├── api/                # Referência da API
+│   ├── core/           # APIs do core
+│   ├── cli/            # APIs do CLI
+│   └── utils/          # APIs utilitárias
+├── guides/             # Guias de uso
+└── examples/           # Exemplos práticos
+```
+
+## Processo de Atualização
+
+### 1. Análise Inicial
+
+1. **Verificar Mudanças**
+   ```bash
+   # Identificar arquivos modificados
+   git diff --name-status main...feature-branch src/git_scope/
+
+   # Ver mudanças específicas
+   git diff main...feature-branch src/git_scope/core/diff.py
+   ```
+
+2. **Mapear Impacto**
+   - Identificar documentos afetados em `docs/api/`
+   - Verificar exemplos em `docs/examples/`
+   - Listar breaking changes
+
+### 2. Atualização da Documentação
+
+#### API Reference (docs/api/core/diff.mdx)
+
+```mdx
+---
+title: 'filter_diff'
+---
+
+# filter_diff
+
+<ParamField path="content" type="string" required>
+  Conteúdo do diff a ser filtrado
+</ParamField>
+
+<ParamField path="patterns" type="List[str]" required>
+  Lista de padrões para filtragem
+</ParamField>
+
+<Note>
+  **Mudança na versão 2.0.0**: Adicionado parâmetro `patterns`
+</Note>
+```
+
+#### Guias e Tutoriais (docs/guides/filtering.mdx)
+
+<CodeGroup>
+  <CodeBlock title="v1.x">
+    ```python
+    from git_scope.core.diff import filter_diff
+
+    result = filter_diff(content)
+    ```
+  </CodeBlock>
+
+  <CodeBlock title="v2.x">
+    ```python
+    from git_scope.core.diff import filter_diff
+
+    patterns = ["*.py", "!tests/*"]
+    result = filter_diff(content, patterns)
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+### 3. Checklist de Verificação
+
+- [ ] **Mudanças na API**
+  - [ ] Assinaturas em `src/git_scope/*/`
+  - [ ] Tipos em `src/git_scope/types/`
+  - [ ] Valores de retorno
+  - [ ] Comportamentos alterados
+
+- [ ] **Documentação**
+  - [ ] API Reference em `docs/api/`
+  - [ ] Exemplos em `docs/examples/`
+  - [ ] Breaking changes documentados
+  - [ ] Guias em `docs/guides/`
+
+- [ ] **Metadados**
+  - [ ] `src/git_scope/__init__.py`
+  - [ ] CHANGELOG.md
+  - [ ] README.md
+
+## Diretrizes de Escrita
+
+### 1. Documentando Breaking Changes
+
+<Warning>
+  **Breaking Change**: A partir da versão 2.0.0, `filter_diff` em `git_scope.core.diff`
+  requer o parâmetro `patterns`. Para manter o comportamento anterior:
+  
+  ```python
+  from git_scope.core.diff import filter_diff
+
+  result = filter_diff(content, patterns=[])
+  ```
+</Warning>
+
+### 2. Atualizando Exemplos (docs/examples/filtering.mdx)
+
+<CodeGroup>
+  <CodeBlock title="v1.x">
+    ```python
+    from git_scope.core.diff import filter_diff
+
+    result = filter_diff(content)
+    ```
+  </CodeBlock>
+
+  <CodeBlock title="v2.x">
+    ```python
+    from git_scope.core.diff import filter_diff
+
+    patterns = ["*.py", "!tests/*"]
+    result = filter_diff(content, patterns)
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+### 3. Documentando Deprecações
+
+<Note>
+  A função `old_filter` em `git_scope.core.diff` está deprecada e será removida na versão 3.0.0.
+  Use `filter_diff` com o parâmetro `patterns` em seu lugar.
+</Note>
+
+## Exemplos de Documentação
+
+### 1. Mudança de Tipo (docs/api/core/parser.mdx)
+
+```python
+# src/git_scope/core/parser.py
+# Antes
+def process(data: dict) -> None:
+    ...
+
+# Depois
+def process(data: dict) -> Optional[str]:
+    ...
+```
+
+<Warning>
+  **Breaking Change**: A função `process()` em `git_scope.core.parser`
+  agora retorna `Optional[str]` em vez de `None`.
+  Verifique todos os locais onde a função é chamada.
+</Warning>
+
+### 2. Novo Parâmetro (docs/api/core/filter.mdx)
+
+```python
+# src/git_scope/core/filter.py
+# Antes
+def validate(data: dict) -> bool:
+    ...
+
+# Depois
+def validate(data: dict, strict: bool = False) -> bool:
+    ...
+```
+
+<Note>
+  Adicionado parâmetro opcional `strict` em `git_scope.core.filter.validate()`.
+  O comportamento padrão (`strict=False`) mantém a compatibilidade com versões anteriores.
+</Note>
+
+## Melhores Práticas
+
+1. **Seja Explícito**
+   - Documente todas as mudanças em `docs/api/`
+   - Explique impactos nas funcionalidades
+   - Forneça exemplos em `docs/examples/`
+
+2. **Mantenha Consistência**
+   - Siga a estrutura de diretórios
+   - Mantenha exemplos atualizados
+   - Siga o padrão de versionamento
+
+3. **Pense no Usuário**
+   - Explique o "por quê" das mudanças
+   - Forneça alternativas quando deprecar
+   - Documente casos de uso em `docs/guides/`

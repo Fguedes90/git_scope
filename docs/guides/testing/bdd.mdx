@@ -1,0 +1,279 @@
+---
+title: 'Testes BDD com pytest-bdd'
+description: 'Guia completo para testes BDD usando pytest-bdd no Git Scope'
+---
+
+# Testes BDD com pytest-bdd
+
+<Note>
+  Este guia explica como implementar testes BDD (Behavior Driven Development)
+  no Git Scope usando pytest-bdd.
+</Note>
+
+## Estrutura de Testes
+
+<CodeGroup>
+  <CodeBlock title="Estrutura">
+    ```bash
+    tests/
+    ├── features/              # Arquivos .feature
+    │   ├── diff/
+    │   │   ├── filter.feature
+    │   │   └── parse.feature
+    │   └── cli/
+    │       └── commands.feature
+    │
+    └── step_defs/            # Implementações dos steps
+        ├── __init__.py
+        ├── diff_steps.py
+        └── cli_steps.py
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+## Escrevendo Features
+
+### Exemplo de Feature
+
+<CodeGroup>
+  <CodeBlock title="filter.feature">
+    ```gherkin
+    Feature: Filtragem de Diff
+      Como um desenvolvedor
+      Eu quero filtrar diffs por padrões
+      Para focar nas mudanças relevantes
+
+      Scenario: Filtrar por extensão de arquivo
+        Given um diff com múltiplos arquivos
+        When eu filtro por "*.py"
+        Then apenas arquivos Python são incluídos
+
+      Scenario: Excluir diretório de testes
+        Given um diff com arquivos de teste
+        When eu filtro com "!tests/*"
+        Then arquivos de teste são excluídos
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+## Implementando Steps
+
+### Fixtures Compartilhadas
+
+<CodeGroup>
+  <CodeBlock title="conftest.py">
+    ```python
+    import pytest
+    from pytest_bdd import given, when, then
+    from git_scope.core import filter_diff
+
+    @pytest.fixture
+    def diff_content():
+        return """
+        diff --git a/src/module.py b/src/module.py
+        index abc...def
+        --- a/src/module.py
+        +++ b/src/module.py
+        @@ -1,3 +1,4 @@
+        +new line
+         existing line
+        """
+
+    @pytest.fixture
+    def filter_result(diff_content):
+        def _filter(patterns):
+            return filter_diff(diff_content, patterns=patterns)
+        return _filter
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+### Steps de Filtragem
+
+<CodeGroup>
+  <CodeBlock title="diff_steps.py">
+    ```python
+    from pytest_bdd import given, when, then, parsers
+    from git_scope.core import filter_diff
+
+    @given("um diff com múltiplos arquivos")
+    def multiple_files_diff():
+        return """
+        diff --git a/src/module.py b/src/module.py
+        ...
+        diff --git a/tests/test_module.py b/tests/test_module.py
+        ...
+        """
+
+    @when(parsers.parse('eu filtro por "{pattern}"'))
+    def filter_by_pattern(pattern, diff_content):
+        return filter_diff(diff_content, patterns=[pattern])
+
+    @then("apenas arquivos Python são incluídos")
+    def check_python_files(filter_result):
+        assert ".py" in filter_result
+        assert ".js" not in filter_result
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+## Boas Práticas
+
+### 1. Organização de Features
+
+<Steps>
+  <Step title="Agrupamento">
+    Organize features por funcionalidade
+  </Step>
+  <Step title="Nomenclatura">
+    Use nomes descritivos e consistentes
+  </Step>
+  <Step title="Escopo">
+    Mantenha features focadas e coesas
+  </Step>
+</Steps>
+
+### 2. Implementação de Steps
+
+<AccordionGroup>
+  <Accordion title="Reutilização">
+    Crie steps genéricos e reutilizáveis
+  </Accordion>
+  <Accordion title="Fixtures">
+    Use fixtures para estado compartilhado
+  </Accordion>
+  <Accordion title="Parametrização">
+    Implemente steps parametrizados
+  </Accordion>
+</AccordionGroup>
+
+### 3. Melhores Práticas
+
+<CardGroup>
+  <Card title="Clareza" icon="lightbulb">
+    Escreva features em linguagem clara e objetiva
+  </Card>
+  <Card title="Manutenção" icon="wrench">
+    Mantenha steps pequenos e focados
+  </Card>
+  <Card title="Cobertura" icon="check">
+    Cubra casos positivos e negativos
+  </Card>
+  <Card title="Documentação" icon="book">
+    Use features como documentação viva
+  </Card>
+</CardGroup>
+
+## Executando Testes
+
+<CodeGroup>
+  <CodeBlock title="Básico">
+    ```bash
+    # Executar todos os testes BDD
+    pytest tests/features
+    ```
+  </CodeBlock>
+  <CodeBlock title="Avançado">
+    ```bash
+    # Executar feature específica
+    pytest tests/features/diff/filter.feature
+
+    # Gerar relatório HTML
+    pytest tests/features --html=report.html
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+## Dicas e Truques
+
+### 1. Debug de Steps
+
+<CodeGroup>
+  <CodeBlock title="Debug">
+    ```python
+    @when("step falha")
+    def debug_step(context):
+        import pdb; pdb.set_trace()
+        # ou
+        breakpoint()
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+### 2. Tags e Marcadores
+
+<CodeGroup>
+  <CodeBlock title="feature">
+    ```gherkin
+    @slow
+    @integration
+    Feature: Feature complexa
+      Scenario: Teste longo
+        Given ...
+    ```
+  </CodeBlock>
+  <CodeBlock title="execução">
+    ```bash
+    # Executar apenas testes marcados
+    pytest -m "slow"
+    
+    # Pular testes marcados
+    pytest -m "not slow"
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+## Integração Contínua
+
+### GitHub Actions
+
+<CodeGroup>
+  <CodeBlock title="bdd.yml">
+    ```yaml
+    name: BDD Tests
+    on: [push, pull_request]
+    
+    jobs:
+      test:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v3
+          - uses: actions/setup-python@v4
+          
+          - name: Install dependencies
+            run: |
+              pip install -e ".[test]"
+              
+          - name: Run BDD tests
+            run: |
+              pytest tests/features
+              
+          - name: Upload report
+            if: always()
+            uses: actions/upload-artifact@v3
+            with:
+              name: bdd-report
+              path: report.html
+    ```
+  </CodeBlock>
+</CodeGroup>
+
+## Troubleshooting
+
+### Problemas Comuns
+
+<AccordionGroup>
+  <Accordion title="Steps Não Encontrados">
+    Verifique se os arquivos de steps estão no PYTHONPATH
+  </Accordion>
+  <Accordion title="Conflito de Steps">
+    Use expressões mais específicas para diferenciar steps
+  </Accordion>
+  <Accordion title="Falhas Intermitentes">
+    Adicione logging e aumente timeouts quando necessário
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  Para mais informações, consulte a [documentação oficial do pytest-bdd](https://pytest-bdd.readthedocs.io/).
+</Note> 

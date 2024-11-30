@@ -1,0 +1,83 @@
+[tool.poetry]
+name = "git-scope"
+version = "0.1.0"
+description = "A tool for filtering and analyzing git diffs"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+packages = [{include = "git_scope", from = "src"}]
+license = "MIT"
+homepage = "https://github.com/yourusername/git-scope"
+repository = "https://github.com/yourusername/git-scope"
+documentation = "https://github.com/yourusername/git-scope/tree/main/docs"
+keywords = ["git", "diff", "filter", "development-tools"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Version Control :: Git",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+click = "^8.1.7"
+gitpython = "^3.1.40,<4.0.0"
+pyyaml = "^6.0.1,<7.0.0"
+rich = "^13.7.0,<14.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+pytest-bdd = "^7.0.1"
+pytest-cov = "^4.1.0"
+black = "^23.11.0"
+isort = "^5.12.0"
+mypy = "^1.7.0"
+flake8 = "^6.1.0"
+pre-commit = "^3.5.0"
+commitizen = "^3.12.0"
+safety = "^2.3.5"
+pytest-watch = "^4.2.0"
+
+[tool.poetry.scripts]
+git-scope = "git_scope.cli.commands:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --cov=git_scope --cov-report=term-missing"
+markers = [
+    "unit: marks tests as unit tests",
+    "integration: marks tests as integration tests",
+    "acceptance: marks tests as acceptance tests",
+]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.1.0"
+tag_format = "v$version"
+version_files = [
+    "pyproject.toml:version",
+    "src/git_scope/__init__.py:__version__"
+]

@@ -1,0 +1,271 @@
+---
+title: 'Roadmap'
+description: 'Planejamento e evolução do Git Scope'
+---
+
+# Roadmap Git Scope
+
+<Note>
+  Este documento descreve o planejamento de desenvolvimento e evolução do Git Scope,
+  incluindo marcos, funcionalidades planejadas e objetivos futuros.
+</Note>
+
+## Visão Geral
+
+<Frame>
+  ```mermaid
+  gantt
+    title Roadmap Git Scope
+    dateFormat  YYYY-MM-DD
+    section Fase 1
+    Core Implementation    :2023-12-01, 30d
+    Basic CLI             :2023-12-15, 20d
+    section Fase 2
+    Advanced Filters      :2024-01-01, 25d
+    Custom Formatters     :2024-01-15, 20d
+    section Fase 3
+    IDE Integration       :2024-02-01, 30d
+    CI/CD Tools          :2024-02-15, 25d
+  ```
+</Frame>
+
+## Fases de Desenvolvimento
+
+### Fase 1: Fundação (Q4 2023)
+
+<Steps>
+  <Step title="Core Implementation">
+    Implementação das funcionalidades básicas do Git Scope
+    
+    <AccordionGroup>
+      <Accordion title="Parser de Diff">
+        - Parsing de diffs do Git
+        - Análise de chunks
+        - Extração de metadados
+      </Accordion>
+      <Accordion title="Sistema de Filtros">
+        - Filtros por padrão
+        - Exclusões
+        - Regras customizáveis
+      </Accordion>
+      <Accordion title="Formatação">
+        - Formatação básica
+        - Colorização
+        - Sumários
+      </Accordion>
+    </AccordionGroup>
+  </Step>
+
+  <Step title="CLI Básica">
+    Interface de linha de comando inicial
+    
+    <CardGroup>
+      <Card title="Comandos" icon="terminal">
+        - filter
+        - analyze
+        - format
+      </Card>
+      <Card title="Configuração" icon="gear">
+        - Arquivo de config
+        - Opções CLI
+        - Defaults
+      </Card>
+    </CardGroup>
+  </Step>
+</Steps>
+
+### Fase 2: Expansão (Q1 2024)
+
+<Steps>
+  <Step title="Filtros Avançados">
+    Expansão do sistema de filtragem
+    
+    <CardGroup>
+      <Card title="Padrões" icon="filter">
+        - Expressões regulares
+        - Padrões compostos
+        - Filtros condicionais
+      </Card>
+      <Card title="Contexto" icon="magnifying-glass">
+        - Análise semântica
+        - Contexto inteligente
+        - Dependências
+      </Card>
+    </CardGroup>
+  </Step>
+
+  <Step title="Formatadores Customizados">
+    Sistema extensível de formatação
+    
+    <CodeGroup>
+      <CodeBlock title="Custom Formatter">
+        ```python
+        class HTMLFormatter(BaseFormatter):
+            def format(self, diff: DiffResult) -> str:
+                """Format diff as HTML with syntax highlighting."""
+                pass
+        ```
+      </CodeBlock>
+    </CodeGroup>
+  </Step>
+</Steps>
+
+### Fase 3: Integração (Q2 2024)
+
+<Steps>
+  <Step title="IDE Integration">
+    Plugins para editores populares
+    
+    <CardGroup>
+      <Card title="VSCode" icon="microsoft">
+        - Extensão VSCode
+        - Visualização inline
+        - Comandos integrados
+      </Card>
+      <Card title="JetBrains" icon="java">
+        - Plugin IntelliJ
+        - Diff viewer
+        - Ações rápidas
+      </Card>
+    </CardGroup>
+  </Step>
+
+  <Step title="CI/CD Tools">
+    Integração com ferramentas de CI/CD
+    
+    <CardGroup>
+      <Card title="GitHub Actions" icon="github">
+        - Action customizada
+        - PR checks
+        - Reports
+      </Card>
+      <Card title="GitLab CI" icon="gitlab">
+        - Pipeline jobs
+        - MR validação
+        - Artifacts
+      </Card>
+    </CardGroup>
+  </Step>
+</Steps>
+
+## Funcionalidades Planejadas
+
+### Core
+
+<AccordionGroup>
+  <Accordion title="Parser Improvements">
+    - Suporte a formatos complexos
+    - Performance optimization
+    - Streaming parser
+  </Accordion>
+  <Accordion title="Advanced Filters">
+    - Semantic filters
+    - Code impact analysis
+    - Custom rules engine
+  </Accordion>
+  <Accordion title="Formatters">
+    - HTML output
+    - JSON schema
+    - Custom templates
+  </Accordion>
+</AccordionGroup>
+
+### Integrations
+
+<CardGroup cols={2}>
+  <Card title="Git Providers" icon="code-branch">
+    - GitHub
+    - GitLab
+    - Bitbucket
+  </Card>
+  <Card title="CI/CD" icon="gears">
+    - GitHub Actions
+    - GitLab CI
+    - Jenkins
+  </Card>
+  <Card title="IDEs" icon="code">
+    - VSCode
+    - IntelliJ
+    - Eclipse
+  </Card>
+  <Card title="Tools" icon="wrench">
+    - Pre-commit
+    - Code review
+    - Analytics
+  </Card>
+</CardGroup>
+
+## Milestones
+
+<Steps>
+  <Step title="v1.0.0 (Q4 2023)">
+    Core functionality and basic CLI
+    
+    - Parser de diff básico
+    - Filtros simples
+    - CLI básica
+  </Step>
+  
+  <Step title="v2.0.0 (Q1 2024)">
+    Advanced features and integrations
+    
+    - Filtros avançados
+    - Formatadores customizados
+    - API pública
+  </Step>
+  
+  <Step title="v3.0.0 (Q2 2024)">
+    IDE integration and CI/CD tools
+    
+    - Plugins IDE
+    - Ferramentas CI/CD
+    - Analytics
+  </Step>
+</Steps>
+
+## Priorização
+
+<Frame>
+  ```mermaid
+  quadrant
+    title Priorização de Features
+    x-axis Low Priority --> High Priority
+    y-axis Low Impact --> High Impact
+    quadrant-1 Parser Improvements
+    quadrant-1 Custom Formatters
+    quadrant-2 IDE Integration
+    quadrant-2 Advanced Filters
+    quadrant-3 Basic CLI
+    quadrant-3 Config File
+    quadrant-4 CI/CD Tools
+    quadrant-4 Git Provider Integration
+  ```
+</Frame>
+
+## Feedback e Ajustes
+
+<Note>
+  Este roadmap é um documento vivo e será ajustado com base em:
+  
+  - Feedback da comunidade
+  - Necessidades dos usuários
+  - Oportunidades técnicas
+  - Recursos disponíveis
+</Note>
+
+## Contribuindo
+
+<Steps>
+  <Step title="Sugestões">
+    Abra uma issue com tag "roadmap"
+  </Step>
+  <Step title="Discussão">
+    Participe das discussões no GitHub
+  </Step>
+  <Step title="Implementação">
+    Contribua com PRs para features planejadas
+  </Step>
+  <Step title="Feedback">
+    Forneça feedback sobre as implementações
+  </Step>
+</Steps> 

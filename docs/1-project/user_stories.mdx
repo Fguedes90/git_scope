@@ -1,0 +1,251 @@
+---
+title: 'Histórias de Usuário'
+description: 'Requisitos e cenários de uso do Git Scope'
+---
+
+# Histórias de Usuário
+
+<Note>
+  Este documento descreve os principais cenários de uso e requisitos do Git Scope,
+  organizados como histórias de usuário para melhor compreensão das necessidades dos usuários.
+</Note>
+
+## Análise de Diff
+
+<AccordionGroup>
+  <Accordion title="Como desenvolvedor">
+    Quero analisar diffs de forma eficiente para:
+    
+    <CardGroup>
+      <Card title="Foco" icon="bullseye">
+        - Identificar mudanças relevantes
+        - Ignorar arquivos irrelevantes
+        - Priorizar revisões
+      </Card>
+      <Card title="Contexto" icon="sitemap">
+        - Entender o impacto das mudanças
+        - Visualizar dependências
+        - Avaliar riscos
+      </Card>
+    </CardGroup>
+  </Accordion>
+  
+  <Accordion title="Como revisor">
+    Quero revisar código eficientemente para:
+    
+    <CardGroup>
+      <Card title="Qualidade" icon="check-double">
+        - Garantir padrões de código
+        - Identificar problemas
+        - Sugerir melhorias
+      </Card>
+      <Card title="Produtividade" icon="bolt">
+        - Reduzir tempo de revisão
+        - Focar no importante
+        - Evitar retrabalho
+      </Card>
+    </CardGroup>
+  </Accordion>
+  
+  <Accordion title="Como líder técnico">
+    Quero monitorar mudanças para:
+    
+    <CardGroup>
+      <Card title="Gestão" icon="chart-line">
+        - Acompanhar progresso
+        - Identificar gargalos
+        - Medir qualidade
+      </Card>
+      <Card title="Mentoria" icon="graduation-cap">
+        - Orientar desenvolvedores
+        - Compartilhar conhecimento
+        - Melhorar práticas
+      </Card>
+    </CardGroup>
+  </Accordion>
+</AccordionGroup>
+
+## Cenários de Uso
+
+### Desenvolvimento
+
+<Steps>
+  <Step title="Análise de Mudanças">
+    <Frame>
+      ```mermaid
+      graph LR
+        A[Commit] --> B[Git Scope]
+        B --> C[Filtros]
+        C --> D[Análise]
+        D --> E[Relatório]
+      ```
+    </Frame>
+    
+    <CardGroup>
+      <Card title="Inputs" icon="arrow-right">
+        - Commits
+        - Pull requests
+        - Branches
+      </Card>
+      <Card title="Outputs" icon="arrow-left">
+        - Relatórios
+        - Visualizações
+        - Métricas
+      </Card>
+    </CardGroup>
+  </Step>
+  
+  <Step title="Revisão de Código">
+    <AccordionGroup>
+      <Accordion title="Preparação">
+        - Filtrar mudanças relevantes
+        - Analisar impacto
+        - Preparar contexto
+      </Accordion>
+      <Accordion title="Revisão">
+        - Revisar código
+        - Adicionar comentários
+        - Sugerir melhorias
+      </Accordion>
+      <Accordion title="Feedback">
+        - Compartilhar feedback
+        - Discutir alterações
+        - Aprovar mudanças
+      </Accordion>
+    </AccordionGroup>
+  </Step>
+  
+  <Step title="Integração">
+    <CardGroup>
+      <Card title="CI/CD" icon="gears">
+        - Validação automática
+        - Testes
+        - Deploy
+      </Card>
+      <Card title="Documentação" icon="book">
+        - Geração automática
+        - Atualização
+        - Versionamento
+      </Card>
+    </CardGroup>
+  </Step>
+</Steps>
+
+### Automação
+
+<AccordionGroup>
+  <Accordion title="CI/CD">
+    <Steps>
+      <Step title="Validação">
+        - Análise de mudanças
+        - Verificação de padrões
+        - Testes automatizados
+      </Step>
+      <Step title="Relatórios">
+        - Geração de relatórios
+        - Métricas de qualidade
+        - Documentação
+      </Step>
+      <Step title="Notificações">
+        - Alertas
+        - Comentários
+        - Updates
+      </Step>
+    </Steps>
+  </Accordion>
+  
+  <Accordion title="Integração">
+    <CardGroup>
+      <Card title="IDEs" icon="code">
+        - Plugins
+        - Extensões
+        - Integrações
+      </Card>
+      <Card title="Git Providers" icon="code-branch">
+        - GitHub
+        - GitLab
+        - Bitbucket
+      </Card>
+    </CardGroup>
+  </Accordion>
+</AccordionGroup>
+
+## Requisitos
+
+### Funcionais
+
+<CardGroup cols={2}>
+  <Card title="Análise" icon="microscope">
+    - Parsing de diff
+    - Filtragem
+    - Análise de impacto
+  </Card>
+  <Card title="Filtros" icon="filter">
+    - Padrões glob
+    - Regex
+    - Exclusões
+  </Card>
+  <Card title="Relatórios" icon="file-lines">
+    - Formatação
+    - Exportação
+    - Customização
+  </Card>
+  <Card title="Integração" icon="puzzle-piece">
+    - APIs
+    - Webhooks
+    - Plugins
+  </Card>
+</CardGroup>
+
+### Não Funcionais
+
+<AccordionGroup>
+  <Accordion title="Performance">
+    - Tempo de resposta < 1s
+    - Baixo uso de memória
+    - Cache eficiente
+  </Accordion>
+  <Accordion title="Usabilidade">
+    - Interface intuitiva
+    - Documentação clara
+    - Exemplos práticos
+  </Accordion>
+  <Accordion title="Confiabilidade">
+    - Alta disponibilidade
+    - Tolerância a falhas
+    - Backup e recuperação
+  </Accordion>
+</AccordionGroup>
+
+## Métricas de Sucesso
+
+<CardGroup cols={2}>
+  <Card title="Produtividade" icon="chart-line">
+    - Tempo de revisão
+    - Velocidade de análise
+    - Taxa de retrabalho
+  </Card>
+  <Card title="Qualidade" icon="shield-check">
+    - Bugs encontrados
+    - Cobertura de código
+    - Débito técnico
+  </Card>
+  <Card title="Satisfação" icon="smile">
+    - Feedback dos usuários
+    - Adoção da ferramenta
+    - NPS
+  </Card>
+  <Card title="Impacto" icon="bullseye">
+    - ROI
+    - Time-to-market
+    - Custo de desenvolvimento
+  </Card>
+</CardGroup>
+
+## Conclusão
+
+<Note>
+  As histórias de usuário e requisitos apresentados guiam o desenvolvimento do Git Scope,
+  assegurando que a ferramenta atenda às necessidades reais dos usuários e agregue
+  valor ao processo de desenvolvimento.
+</Note> 
