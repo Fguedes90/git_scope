@@ -155,7 +155,7 @@ jobs:
       
       - name: Notify team
         if: always()
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v2.0.0
         with:
           channel-id: 'releases'
           slack-message: |
